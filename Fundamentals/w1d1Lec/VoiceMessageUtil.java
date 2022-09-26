@@ -17,4 +17,13 @@ class VoiceMessageUtil {
     public String greetWithDate(){
         return "Hi, today is " + new Date();
     }
+
+    // loops
+    public int totalMessages(int[] numArr) {
+        int sum = 0;
+        for(int i = 0; i<numArr.length; i++) {
+            sum += numArr[i];
+        }
+        return sum;
+    }
 }
