@@ -1,22 +1,26 @@
 import java.util.Date;
-public class AlfredQuotes {
+
+class AlfredQuotes {
     public String basicGreeting() {
-        // example - no coding here
         return "Hello, lovely to see you. How are you?";
     }
+
     public String guestGreeting(String name, String dayPeriod) {
-        return String.format("Good %s, %s. Lovely to see you", dayPeriod, name);
+        return String.format("Good %s %s", dayPeriod, name);
+        
     }
+
     public String dateAnnouncement() {
-        return String.format("it is currently %s", new Date());
+        return "Today is " + new Date();
     }
-    public String respondBeforeAlexis(String phrase) {
-        if(phrase.indexOf("Alexis") > -1) {
-            return "she's really of no help. what can i get for you?";
+
+    public String respondBeforeAlexis(String conversation) {
+        if(conversation.indexOf("Alexis") > -1) {
+            return "Alexis? Never heard of her";
+        } 
+        if(conversation.indexOf("Alfred") > -1) {
+            return "Alfred's got you boo boo";
         }
-        if(phrase.indexOf("Alfred") > -1) {
-            return "At your service, naturally. how may i be of assistance?";
-        }
-        return "right. and with that i shall retire";
+        return "Alfred here";
     }
 }
