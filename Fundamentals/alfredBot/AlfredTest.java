@@ -20,13 +20,6 @@ class AlfredTest {
         System.out.println(alexisTest);
         System.out.println(alfredTest);
         System.out.println(defaultConvo);
-        // System.out.println(alfredBot.guestGreeting("Lee", "morning"));
-        // System.out.println(alfredBot.dateAnnouncement());
-        // System.out.println(alfredBot.respondBeforeAlexis(
-        //     "Alexis, play some snake jazz"));
-        // System.out.println(alfredBot.respondBeforeAlexis(
-        //     "Apologies, Alfred, play some snake jazz"));
-        // System.out.println(alfredBot.respondBeforeAlexis(
-        //     "thank you" ));
+        System.out.println(defaultConvo.toUpperCase());
     }
 }
