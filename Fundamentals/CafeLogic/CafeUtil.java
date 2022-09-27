@@ -22,12 +22,16 @@ class CafeUtil {
 
     //display menu
     public void displayMenu(ArrayList<String> menuItems) {
-        for(String menu: menuItems) {
-            System.out.println(menu);
+        for( int i = 0; i < menuItems.size(); i ++){
+            System.out.println(i + " : " + menuItems.get(i));
         }
     }
 
     // add customer
-//     public addCustomer(ArrayList<String> customers) {
+    public void addCustomer(ArrayList<String> customers) {
+        System.out.println("Please enter your name:");
+        String userName = System.console().readLine();
+        System.out.println("Hello, " + userName + "there are");
+    }
 
 }

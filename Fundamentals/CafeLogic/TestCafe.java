@@ -32,13 +32,13 @@ public class TestCafe {
         System.out.println("------ Add Customer Test ------");
         ArrayList<String> customers = new ArrayList<String>();
         // Test 4 times
-        // for(int i = 0; i < 4; i++) {
-        //     appTest.addCustomer(customers);
-        //     System.out.println("\n");
-        // }
-        System.out.println("Please enter your name:");
-        String userName = System.console().readLine();
-        System.out.printf("Hello, %s ", userName);
+        for(int i = 0; i < 4; i++) {
+            appTest.addCustomer(customers);
+            System.out.println("\n");
+        }
+        // System.out.println("Please enter your name:");
+        // String userName = System.console().readLine();
+        // System.out.printf("Hello, %s ", userName);
     }
 
 }
