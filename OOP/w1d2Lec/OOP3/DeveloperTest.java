@@ -2,7 +2,8 @@ import java.util.ArrayList;
 class DeveloperTest {
     public static void main(String[] args) {
         System.out.println("----- Starting Developer test -----");
-
+        // can use Developer. b/c of static defined in getters/setters
+        System.out.println("Dev count: " + Developer.getDevCount());
         // create a developer - create an instance of Developer class
         Developer dev1 = new Developer("Pepper", 2);
         dev1.displayInfo();
@@ -22,7 +23,8 @@ class DeveloperTest {
          // created another anonymous developer
         Developer dev2 = new Developer();
         dev2.displayInfo();
+        System.out.println("Dev count: " + Developer.getDevCount());
+        System.out.println("Total languages: " + Developer.getTotalLanguages());
 
-        Developer.getDevCount();
     }
 }

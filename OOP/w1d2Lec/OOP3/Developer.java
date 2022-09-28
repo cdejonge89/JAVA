@@ -9,6 +9,8 @@ class Developer {
     private int braincell;
     private double salary;
     private static int devCount;
+    private static int totalLanguages;
+
 
     // 2. constructor (overladed constructor & empty argument)
     public Developer(){
@@ -16,6 +18,7 @@ class Developer {
         this.yearsOfCoding = 5;
         this.languages = new ArrayList<String>();
         this.braincell = 30;
+        devCount++;
     }
 
     public Developer(String name, int braincell) {
@@ -23,6 +26,7 @@ class Developer {
         this.braincell = braincell;
         this.languages = new ArrayList<String>();
         this.yearsOfCoding = 10;
+        devCount++;
     }
 
     // 3. getters & setters (getVariableName (getYearsOfCoding))
@@ -51,10 +55,14 @@ class Developer {
     // we need to add static
     // static: the method below belongs to the class, not the instance
     public static int getDevCount(){
-        return this.devCount;
+        return devCount;
     }
-    public static void setDevCount(int devCount){
-        this.devCount = devCount;
+    public static void setDevCount(int updatedCount){
+        devCount = updatedCount;
+    }
+
+    public static int getTotalLanguages(){
+        return totalLanguages;
     }
 
 
@@ -74,10 +82,10 @@ class Developer {
     public void setSalary(double salary) {
         this.salary = salary;
     }
-
-    public void setLanguages(ArrayList<String> languages) {
-        this.languages = languages;
-    }
+    // removed this one due to the static language count we added
+    // public void setLanguages(ArrayList<String> languages) {
+    //     this.languages = languages;
+    // }
 
     // other methods - create a print all method to call in the test
     public void displayInfo() {
@@ -93,5 +101,6 @@ class Developer {
         this.languages.add(lang);
         this.salary += 1000;
         this.braincell += 10;
+        totalLanguages++;
     }
 }
