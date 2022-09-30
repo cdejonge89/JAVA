@@ -1,0 +1,72 @@
+File --> new --> New Spring Starter Project
+    packaging: war
+    java version: 8
+    change the names/add descriptions
+        next -->
+            + Spring web
+            + Spring boot DevTools
+                finish
+right click on project
+--> run as: Spring Boot App
+    --> localhost:8080
+        --> WhiteLabel Error page is a.ok!
+project name
+
+--- Controllers ---
+create controller package (.controllers)
+@Controller
+public class ControllerFileName {
+	@RequestMapping("/")
+	public String user(Model model) {
+		String firstName = "Ada";
+		String lastName = "LoveLace";
+		String email = "cdojo@gmail.com";
+		Integer age = 33;
+		
+		model.addAttribute("first", firstName);
+		model.addAttribute("last", lastName);
+		model.addAttribute("email", email);
+		model.addAttribute("age", age);
+		
+		return "home.jsp";
+	}
+}
+don't forget to shit+command+o to install 
+
+
+--- Dependencies ---
+pom.xml
+<dependency>
+    <groupId>org.apache.tomcat.embed</groupId>
+    <artifactId>tomcat-embed-jasper</artifactId>
+</dependency>
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>jstl</artifactId>
+</dependency>
+
+--- WEB-INF ---
+src
+--> main
+    --> webapp
+        --> add folder: WEB-INF
+            --> add new: other: jsp file: home
+                add after line 2
+                    <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
+                add after title
+                    <link rel="stylesheet" type="text/css" href="/css/style.css">
+	                <script type="text/javascript" src="/js/app.js"></script>
+                don't forget this line to pass from controller to jsp file
+                    <c:out value="${}" />
+
+--- src/main/resources ---
+application properties
+--> spring.mvc.view.prefix=/WEB-INF/
+
+
+
+
+
+
+
+
