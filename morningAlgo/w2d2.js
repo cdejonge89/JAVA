@@ -60,7 +60,20 @@ class BinarySearchTree {
 
     
     //Calculates the range (max - min) from the given startNode.
-    range(startNode = this.root) {}
+    minRecursive(current = this.root) {
+        if (current.left == null) return current.data
+        return this.minRecursive(current.left);
+    }
+    maxRecursive(current = this.root) {
+        if (current.right == null) return current.data
+        return this.maxRecursive(current.right);
+    }
+  
+    range(startNode = this.root) {
+        let minVal = this.minRecursive(startNode);
+        let maxVal = this.maxRecursive(startNode);
+        return maxVal - minVal;
+    }
 
     // HELPER METHOD
     // Logs this tree horizontally with the root on the left.
@@ -119,6 +132,8 @@ console.log(threeLevelTree.contains(20)) // true
 console.log(threeLevelTree.contains(50)) // false
 console.log(threeLevelTree.containsRecursive(50)) // false
 console.log(threeLevelTree.containsRecursive(20)) // true
+console.log(threeLevelTree.range())
+console.log(twoLevelTree.range())
 /* fullTree
                         root
                     <-- 25 -->
