@@ -25,22 +25,22 @@ public class BookService {
     
     // find one
     public Book oneBook(Long id) {
-    	Optional<Book> optionalBook = bookRepository.findById(id);
-    	if(optionalBook.isPresent()) {
-    		return optionalBook.get();
-    	} else {
-    		return null;
-    	}
+            Optional<Book> optionalBook = bookRepository.findById(id);
+            if(optionalBook.isPresent()) {
+                return optionalBook.get();
+            } else {
+                return null;
+            }
     }
     
     // update a book
     public Book editBook(Book updatedBook) {
-    	return bookRepository.save(updatedBook);
+        return bookRepository.save(updatedBook);
     }
     
     // delete a book
     public void deleteBook(Long id) {
-    	bookRepository.deleteById(id);
+        bookRepository.deleteById(id);
     }
     
     // retrieves a book

@@ -5,55 +5,199 @@ File --> new --> New Spring Starter Project
         next -->
             + Spring web
             + Spring boot DevTools
-                finish
-right click on project
---> run as: Spring Boot App
-    --> localhost:8080
-        --> WhiteLabel Error page is a.ok!
+            + MySQL Driver
+            + Spring Data JPA
+                --> finish
 
---- Dependencies ---
+---------------------- Dependencies ---------------------------------
 pom.xml
+<!-- DEPENDENCIES FOR DISPLAYING JSPS AND USING JSTL TAGS -->
+//
         <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-jasper</artifactId>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
         </dependency>
 
+<!-- DEPENDENCY FOR USING VALIDATION ANNOTATIONS -->
+//
         <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>jstl</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-validation</artifactId>
-    </dependency>   
+<!-- DEPENDENCY FOR USING BCRYPT  -->
+//
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+        
+<!-- DEPENDENCIES FOR INTEGRATING SQL DATABASE AND USING JPA -->
+        <!-- Note: Project will not run until a schema has been created and the 
+            proper settings in application properties are present for 
+            connecting to a database. -->
+//
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
 
---- WEB-INF ---
+<!-- DEPENDENCIES FOR STARTING SPRING PROJECTS-->
+// these sould auto imported once the project has been created
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+--------------- CREATE MYSQL SCHEMA ------------------------
+utf8
+run spring boot application
+
+----------------- CREATE PACKAGES --------------------------
+.controllers
+.models
+.services
+.repositories
+
+STOP THE SERVER
+---------------------- MVC MODELS ---------------------------
+--> create attributes
+@Entity
+@Table(name="books")
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
+    @Size(min = 5, max = 200, message="Please add a title")
+    private String title;
+
+--> create constructors
+    public Book() {}
+    //
+    public Book(String title, String desc, String lang, int pages) {
+        this.title = title;
+        this.description = desc;
+        this.language = lang;
+        this.numberOfPages = pages;
+    }
+
+--> insert getters and setters
+
+---------------------- TEST MYSQL WORKBENCH ---------------
+run as spring boot app
+check for table in mysql
+
+-------------------------- MVC REPOSITORY --------------------
+keeps track of queries
+in repository package
+--> create new interface
+    --> NameRepository
+
+@Repository
+public interface BookRepository extends CrudRepository<Book, Long>{
+	    List<Book> findAll();
+}
+
+-------------------------- MVC SERVICE --------------------
+@Service
+public class SaveTravelService {
+	
+	//when we want to import, we can define variable
+	private final SaveTravelsRepository saveTravelsRepo;
+	// put variable in constructor
+	public SaveTravelService(SaveTravelsRepository saveTravelsRepo) {
+		this.saveTravelsRepo = saveTravelsRepo;
+	}
+--> create
+    public Book createBook(Book b) {
+        return bookRepository.save(b);
+    }
+
+--> find all
+    public List<Book> allBooks() {
+        return bookRepository.findAll();
+    }
+
+----------------------- MVC CONTROLLER -------------------
+@RestController
+public class APIController {
+
+	private final SaveTravelService expenseService;
+	public APIController(SaveTravelService expenseService) {
+		this.expenseService = expenseService;
+	}
+	
+	@RequestMapping("/api/expense")
+	public List<SaveTravelsModel> index(){
+		return expenseService.allExpenses();
+	}
+}
+
+--> test get w/postman
+
+---------------------- WEB-INF ------------------------
 src
 --> main
     --> webapp
         --> add folder: WEB-INF
             --> add new: other: jsp file: home
-                add after line 2
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
-                add after title
+------------------------- JSP tag library imports -------------------
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!-- c:out ; c:forEach etc. --> 
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!-- Formatting (dates) --> 
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<!-- form:form -->
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<!-- for rendering errors on PUT routes -->
+<%@ page isErrorPage="true" %>
+
+--------------------------- CSS/JS LINKING ------------------------------
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 <script type="text/javascript" src="/js/app.js"></script>
-                don't forget this line to pass from controller to jsp file
-                    <c:out value="${}" />
+don't forget this line to pass from controller to jsp file
+<c:out value="${}" />
 
---- src/main/resources ---
+----------------------- src/main/resources ---------------------
 application properties
 spring.mvc.view.prefix=/WEB-INF/
-spring.datasource.url=jdbc:mysql://localhost:3306/<<YOUR_SCHEMA>>
-spring.datasource.username=<<dbuser>>
-spring.datasource.password=<<dbpassword>>
+spring.datasource.url=jdbc:mysql://localhost:3306/<<YOUR_SCHEMA_NAME>>
+spring.datasource.username=root
+spring.datasource.password=Wolfie123
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver
 spring.jpa.hibernate.ddl-auto=update
+# For Update and Delete method hidden inputs
+spring.mvc.hiddenmethod.filter.enabled=true
 
-project name
-
---- Controllers ---
+------------------------- Controllers ---------------------------
 create controller package (.controllers)
 @Controller
 public class ControllerFileName {
