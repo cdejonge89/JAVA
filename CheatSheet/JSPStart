@@ -162,6 +162,18 @@ public class APIController {
 }
 
 --> test get w/postman
+if it's working, move to create
+
+	//create
+	@PostMapping("/api/expense")
+	public SaveTravelsModel create(
+			@RequestParam("expense") String expense,
+			@RequestParam("vendor") String vendor,
+			@RequestParam("amount") Double amount
+			) {
+		SaveTravelsModel newExpense = new SaveTravelsModel(expense, vendor, amount);
+		return expenseService.createExpense(newExpense);
+	}
 
 ---------------------- WEB-INF ------------------------
 src
