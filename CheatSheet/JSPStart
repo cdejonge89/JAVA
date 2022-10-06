@@ -77,6 +77,18 @@ pom.xml
 
 --------------- CREATE MYSQL SCHEMA ------------------------
 utf8
+
+----------------------- src/main/resources ---------------------
+application properties
+spring.mvc.view.prefix=/WEB-INF/
+spring.datasource.url=jdbc:mysql://localhost:3306/<<YOUR_SCHEMA_NAME>>
+spring.datasource.username=root
+spring.datasource.password=Wolfie123
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=update
+# For Update and Delete method hidden inputs
+spring.mvc.hiddenmethod.filter.enabled=true
+
 run spring boot application
 
 ----------------- CREATE PACKAGES --------------------------
@@ -87,6 +99,7 @@ run spring boot application
 
 STOP THE SERVER
 ---------------------- MVC MODELS ---------------------------
+This is where you define your model in DB
 --> create attributes
 @Entity
 @Table(name="books")
@@ -99,6 +112,17 @@ public class Book {
     @Size(min = 5, max = 200, message="Please add a title")
     private String title;
 
+    @NotNull
+    @Min(100)
+    private Integer numberOfPages;
+
+--> CreatedAt/UpdatedAt
+    @Column(updatable=false)
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private Date createdAt;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private Date updatedAt;
+
 --> create constructors
     public Book() {}
     //
@@ -109,11 +133,21 @@ public class Book {
         this.numberOfPages = pages;
     }
 
+--> add after constructor
+    @PrePersist
+    protected void onCreate(){
+        this.createdAt = new Date();
+    }
+    @PreUpdate
+    protected void onUpdate(){
+        this.updatedAt = new Date();
+
 --> insert getters and setters
 
 ---------------------- TEST MYSQL WORKBENCH ---------------
 run as spring boot app
 check for table in mysql
+if it's good, stop the server and continue
 
 -------------------------- MVC REPOSITORY --------------------
 keeps track of queries
@@ -131,21 +165,17 @@ public interface BookRepository extends CrudRepository<Book, Long>{
 public class SaveTravelService {
 	
 	//when we want to import, we can define variable
-	private final SaveTravelsRepository saveTravelsRepo;
+	private final BookRepository bookRepo;
 	// put variable in constructor
-	public SaveTravelService(SaveTravelsRepository saveTravelsRepo) {
-		this.saveTravelsRepo = saveTravelsRepo;
+	public BookService(BookRepository bookRepo) {
+		this.bookRepo =bookRepo;
 	}
---> create
-    public Book createBook(Book b) {
-        return bookRepository.save(b);
-    }
 
---> find all
-    public List<Book> allBooks() {
-        return bookRepository.findAll();
-    }
+--> or
+    @Autowire
+    private BookRepository bookRepo
 
+--> Create CRUD
 ----------------------- MVC CONTROLLER -------------------
 @RestController
 public class APIController {
@@ -162,18 +192,8 @@ public class APIController {
 }
 
 --> test get w/postman
-if it's working, move to create
-
-	//create
-	@PostMapping("/api/expense")
-	public SaveTravelsModel create(
-			@RequestParam("expense") String expense,
-			@RequestParam("vendor") String vendor,
-			@RequestParam("amount") Double amount
-			) {
-		SaveTravelsModel newExpense = new SaveTravelsModel(expense, vendor, amount);
-		return expenseService.createExpense(newExpense);
-	}
+if it's working, move on to other methods
+once backend is done, move on to server side
 
 ---------------------- WEB-INF ------------------------
 src
@@ -197,17 +217,6 @@ src
 <script type="text/javascript" src="/js/app.js"></script>
 don't forget this line to pass from controller to jsp file
 <c:out value="${}" />
-
------------------------ src/main/resources ---------------------
-application properties
-spring.mvc.view.prefix=/WEB-INF/
-spring.datasource.url=jdbc:mysql://localhost:3306/<<YOUR_SCHEMA_NAME>>
-spring.datasource.username=root
-spring.datasource.password=Wolfie123
-spring.datasource.driver-class-name=com.mysql.jdbc.Driver
-spring.jpa.hibernate.ddl-auto=update
-# For Update and Delete method hidden inputs
-spring.mvc.hiddenmethod.filter.enabled=true
 
 ------------------------- Controllers ---------------------------
 create controller package (.controllers)
