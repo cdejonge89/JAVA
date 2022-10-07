@@ -95,7 +95,7 @@ run spring boot application
 .controllers
 .models
 .services
-.repositories
+.repositories - interface
 
 STOP THE SERVER
 ---------------------- MVC MODELS ---------------------------
@@ -113,7 +113,12 @@ public class Book {
     private String title;
 
     @NotNull
-    @Min(100)
+    @Email
+    @Size(min = 5, message="Email must be least 5 characters")
+    private String email;
+
+    @NotNull(message="provide quantity")
+	@Min(value=1, message="quantity must be over 0")
     private Integer numberOfPages;
 
 --> CreatedAt/UpdatedAt
@@ -141,6 +146,7 @@ public class Book {
     @PreUpdate
     protected void onUpdate(){
         this.updatedAt = new Date();
+    }
 
 --> insert getters and setters
 
@@ -150,8 +156,9 @@ check for table in mysql
 if it's good, stop the server and continue
 
 -------------------------- MVC REPOSITORY --------------------
+interface
 keeps track of queries
-in repository package
+in repository package - interface
 --> create new interface
     --> NameRepository
 
@@ -172,7 +179,7 @@ public class SaveTravelService {
 	}
 
 --> or
-    @Autowire
+    @Autowired
     private BookRepository bookRepo
 
 --> Create CRUD
