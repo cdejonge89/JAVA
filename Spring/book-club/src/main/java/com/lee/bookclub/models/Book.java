@@ -38,8 +38,8 @@ public class Book {
     private String thoughts;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="book_id")
-    private User book;
+    @JoinColumn(name="user_id")
+    private User ownBook;
     
     @Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -90,12 +90,7 @@ public class Book {
 	public void setThoughts(String thoughts) {
 		this.thoughts = thoughts;
 	}
-	public User getBook() {
-		return book;
-	}
-	public void setBook(User book) {
-		this.book = book;
-	}
+
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -107,6 +102,16 @@ public class Book {
 	}
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+
+	public User getOwnBook() {
+		return ownBook;
+	}
+
+
+	public void setOwnBook(User ownBook) {
+		this.ownBook = ownBook;
 	}
     
 	

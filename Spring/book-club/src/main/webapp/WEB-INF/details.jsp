@@ -19,10 +19,11 @@
 		<!-- .book is coming from model  -->
 		<h1><c:out value="${book.title }"/></h1>
 		<a href="/books">Back to the shelves</a>
-		
+		<!-- only show this block if the userId from user model equals boook id from book model  -->
+		<!-- .book  is from many to one relationship -->
 		<c:choose>
-			<!-- only show this block if the userId from user model equals boook id from book model  -->
-			<c:when test="${userId.equals(book.book.id) }">
+
+			<c:when test="${userId.equals(book.ownBook.id) }">
 				<p>You read <c:out value="${book.title }"/> by <c:out value="${book.author }"/> </p>
 				<p>Here are your thoughts: </p>
 				<p><c:out value="${book.thoughts }"/></p>
@@ -33,8 +34,8 @@
 				</form> 
 			</c:when>
 			<c:otherwise>
-				<p><c:out value="${book.book.userName }"/> read <c:out value="${book.title }"/> by <c:out value="${book.author }"/></p> 
-				<p>Here are <c:out value="${book.book.userName }"/>'s thoughts: </p>
+				<p><c:out value="${book.ownBook.userName }"/> read <c:out value="${book.title }"/> by <c:out value="${book.author }"/></p> 
+				<p>Here are <c:out value="${book.ownBook.userName }"/>'s thoughts: </p>
 				<p><c:out value="${book.thoughts }"/></p>
 			</c:otherwise>
 		</c:choose>

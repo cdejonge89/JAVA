@@ -41,7 +41,7 @@
  					<form:errors path="thoughts" style="color:DarkRed"/>
  				</div>
  				<!-- this line must exist as to not delete the user who created the book -->
- 				<form:hidden path="book"/>
+ 				<form:hidden path="ownBook"/>
  				<button type="submit">Submit</button>
  			</form:form>
  		</div>

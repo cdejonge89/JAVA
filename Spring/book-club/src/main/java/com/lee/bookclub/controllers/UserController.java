@@ -34,11 +34,13 @@ public class UserController {
 	public String processRegister(@Valid @ModelAttribute("newUser") User newUser,
 			BindingResult result, Model model, HttpSession session) {
 		// this line is calling newUser and passing result of userService
-		User registeredUser =userService.register(newUser, result);
+		User registeredUser = userService.register(newUser, result);
 		if(result.hasErrors()) {
 			model.addAttribute("newLogin", new LoginUser());
 			return "login.jsp";
 		} else {
+			// this line allows the redirect to work b/c we're setting the userId in session
+			session.setAttribute("userId", registeredUser.getId());
 			session.setAttribute("userName", registeredUser.getUserName());
 			return "redirect:/books";
 		}

@@ -25,7 +25,6 @@ public class HomeController {
 	//dashboard - FIND ALL
 	@GetMapping("/donations")
 	public String dashboard(HttpSession session, Model model) {
-		// if statement for security - can only go to this page if logged in
 		if(session.getAttribute("userId")==null) {
 			return "redirect:/logout";
 		}

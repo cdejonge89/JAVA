@@ -40,7 +40,7 @@
  					<form:errors path="thoughts" style="color:DarkRed"/>
  				</div>
  				<!-- Must include this line so userId can be linked to book -->
- 				<form:hidden path="book" value="${userId }"/>
+ 				<form:hidden path="ownBook" value="${userId }"/>
  				<button type="submit">Submit</button>
  			</form:form>
  		</div>

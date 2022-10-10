@@ -43,7 +43,7 @@
 							</td>
 							<td><c:out value="${books.author }"/></td>
 							<!-- .books is coming from var, .book is coming from model, .userName is coming from session -->
-							<td><c:out value="${books.book.userName }"/></td>
+							<td><c:out value="${books.ownBook.userName }"/></td>
 						</tr>
 					</c:forEach>
 				</tbody>

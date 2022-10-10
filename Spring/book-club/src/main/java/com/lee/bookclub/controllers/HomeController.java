@@ -75,7 +75,7 @@ public class HomeController {
 		Book book = bookService.oneBook(id);
 		model.addAttribute("book", book);
 		// this line doesn't let you edit someone elses book
-		if(book.getBook().getId() != (Long) session.getAttribute("userId")) {
+		if(book.getOwnBook().getId() != (Long) session.getAttribute("userId")) {
 			return "redirect:/books";
 		}
 		return "editBook.jsp";
