@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Add a book</title>
+<title>Edit Book</title>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 <body>
  	<div class="container">
@@ -20,10 +20,11 @@
  			<a href="/books">Back to the shelves</a>
  		</div>
  		<div class="bookPage">
- 			<h1>Add a book to your shelf!</h1>
+ 			<h1>Edit your book</h1>
  		</div>
  		<div>
- 			<form:form action="/new/books" method="POST" modelAttribute="newBook">
+ 			<form:form method="POST" modelAttribute="book" action="/books/edit/${book.id }"  >
+ 				<input type="hidden" name="_method" value="put">
  				<div>
  					<form:label path="title">Title</form:label>
  					<form:input path="title"/>
@@ -39,8 +40,8 @@
  					<form:textarea path="thoughts"/>
  					<form:errors path="thoughts" style="color:DarkRed"/>
  				</div>
- 				<!-- Must include this line so userId can be linked to book -->
- 				<form:hidden path="book" value="${userId }"/>
+ 				<!-- this line must exist as to not delete the user who created the book -->
+ 				<form:hidden path="book"/>
  				<button type="submit">Submit</button>
  			</form:form>
  		</div>

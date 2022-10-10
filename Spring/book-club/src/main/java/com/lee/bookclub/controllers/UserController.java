@@ -20,6 +20,8 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	// LOG/REG page
+	
+	//REGISTER
 	// show form
 	@GetMapping("/")
 	public String index(Model model) {
@@ -27,8 +29,7 @@ public class UserController {
 		model.addAttribute("newLogin", new LoginUser());
 		return "login.jsp";
 	}
-	
-	// 2.1 process register
+	// process register
 	@PostMapping("/register")
 	public String processRegister(@Valid @ModelAttribute("newUser") User newUser,
 			BindingResult result, Model model, HttpSession session) {

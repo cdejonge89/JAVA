@@ -4,6 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+// no need to store this info in the DB
 public class LoginUser {
 	@NotEmpty(message="Email is required!")
     @Email(message="Please enter a valid email!")

@@ -17,6 +17,7 @@
 <body>
 	<div class="container">
 		<div class="bookPage">
+			<!-- User Name is accessible through session, make sure to pass session in controller mapping -->
 			<h1>Welcome, ${userName }</h1>
 			<a href="/logout">Logout </a>
 			<a href="/books/new">+ Add a book to my shelf</a>
@@ -26,7 +27,7 @@
 				<thead>
 					<tr>
 						<th>ID</th>
-						<th>Title/th>
+						<th>Title</th>
 						<th>Author Name</th>
 						<th>Posted By</th>
 					</tr>
@@ -36,11 +37,12 @@
 						<tr>
 							<td><c:out value="${books.id }"/></td>
 							<td>
-								<a href="/books/details/${books.id }">
+								<a href="/books/${books.id }">
 								<c:out value="${books.title }"/>
 								</a>
 							</td>
 							<td><c:out value="${books.author }"/></td>
+							<!-- .books is coming from var, .book is coming from model, .userName is coming from session -->
 							<td><c:out value="${books.book.userName }"/></td>
 						</tr>
 					</c:forEach>

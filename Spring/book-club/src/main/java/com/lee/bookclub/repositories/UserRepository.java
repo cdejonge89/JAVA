@@ -12,6 +12,7 @@ import com.lee.bookclub.models.User;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long>{
+	// finding the user by their email
 	Optional<User> findByEmail(String email);
 	
 
