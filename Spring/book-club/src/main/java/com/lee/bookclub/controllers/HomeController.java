@@ -47,7 +47,10 @@ public class HomeController {
 	@PostMapping("/new/books")
 	public String processBook(
 			@Valid @ModelAttribute("newBook") Book book,
-			BindingResult result, Model model) {
+			BindingResult result, Model model, HttpSession session) {
+		if(session.getAttribute("userId")==null) {
+			return "redirect:/logout";
+		}
 		if(result.hasErrors()) {
 			return "newBook.jsp";
 		} else {
@@ -59,9 +62,12 @@ public class HomeController {
 	//DETAILS - FIND ONE
 	@GetMapping("/books/{id}")
 	public String bookDetails(@PathVariable("id") Long id, Model model, HttpSession session) {
+		if(session.getAttribute("userId")==null) {
+			return "redirect:/logout";
+		}
 		Book book = bookService.oneBook(id);
 		model.addAttribute("book", book);
-		model.addAttribute("bookList", bookService.allBooks());
+//		model.addAttribute("bookList", bookService.allBooks());
 		return "details.jsp";
 	}
 	
@@ -83,7 +89,10 @@ public class HomeController {
 	@PutMapping("/books/edit/{id}")
 	public String processBook(
 			@Valid @ModelAttribute("book") Book book,
-			BindingResult result) {
+			BindingResult result, HttpSession session) {
+		if(session.getAttribute("userId")==null) {
+			return "redirect:/logout";
+		}
 		if(result.hasErrors()) {
 			return "editBook.jsp";
 		} else {

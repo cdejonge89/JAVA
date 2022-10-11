@@ -1,4 +1,4 @@
-package com.lee.bookclub.controllers;
+package com.lee.manytomany.controllers;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.lee.bookclub.models.LoginUser;
-import com.lee.bookclub.models.User;
-import com.lee.bookclub.services.UserService;
+import com.lee.manytomany.models.LoginUser;
+import com.lee.manytomany.models.User;
+import com.lee.manytomany.services.UserService;
 
 @Controller
 public class UserController {
@@ -39,10 +39,10 @@ public class UserController {
 			model.addAttribute("newLogin", new LoginUser());
 			return "login.jsp";
 		} else {
-			session.setAttribute("userName", registeredUser.getUserName());
 			// this line allows the redirect to work b/c we're setting the userId in session
 			session.setAttribute("userId", registeredUser.getId());
-			return "redirect:/books";
+			session.setAttribute("userName", registeredUser.getUserName());
+			return "redirect:/donations";
 		}
 	}
 	
@@ -59,7 +59,7 @@ public class UserController {
 		} else {
 			session.setAttribute("userId", user.getId());
 			session.setAttribute("userName", user.getUserName());
-			return "redirect:/books";
+			return "redirect:/donations";
 		}
 	}
 	
@@ -70,4 +70,6 @@ public class UserController {
 		session.invalidate();
 		return "redirect:/";
 	}
+	
+
 }

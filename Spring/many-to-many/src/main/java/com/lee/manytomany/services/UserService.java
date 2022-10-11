@@ -1,0 +1,89 @@
+package com.lee.manytomany.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+
+import com.lee.manytomany.models.LoginUser;
+import com.lee.manytomany.models.User;
+import com.lee.manytomany.repositories.UserRepository;
+
+@Service
+public class UserService {
+	@Autowired
+	private UserRepository userRepo;
+	
+	//FIND ALL USERS
+	public List<User> allUsers() {
+		return userRepo.findAll();
+	}
+	
+	//FIND ONE USER
+	public User oneUser(Long id) {
+		Optional<User> optionalUser = userRepo.findById(id);
+		if(optionalUser.isPresent()) {
+			return optionalUser.get();
+		} else {
+			return null;
+		}
+	}
+	
+	// CREATE
+	// REGISTER user and check validations
+	public User register(User newUser, BindingResult result) {
+    	// Reject if email is false(present in database)
+    	// 1. find user in the DB by email
+    	//.findByEmail email can be found in newUser object
+    	Optional<User> optionalUser = userRepo.findByEmail(newUser.getEmail());
+    	
+    	// 2. if the email is present, reject
+    	if(optionalUser.isPresent()) {
+    		result.rejectValue("email", "Unique", "The email is already registered");
+    	}
+    	
+    	// Reject if password doesn't match confirmation
+    	if(!newUser.getPassword().equals(newUser.getConfirm())) {
+    		result.rejectValue("confirm", "Matches", "Passowrds do not match");
+    		System.out.println(result);
+    	}
+    	
+    	// Return null if result has errors
+    	if(result.hasErrors()) {
+    		return null;
+    	}
+    	// Hash and set password, save user to database
+    	String hashed = BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt());
+    	newUser.setPassword(hashed);
+    	userRepo.save(newUser);
+        return newUser;
+    }
+	
+	//LOGIN
+	public User login(LoginUser newLogin, BindingResult result) {
+		// find user in the db by email
+		Optional<User> optionalUser = userRepo.findByEmail(newLogin.getEmail());
+		// if email is not present, reject 
+		if(!optionalUser.isPresent()) {
+			result.rejectValue("email", "Matches", "This email is not registered");
+			return null;
+		}
+		// grab the user from potential user
+		User user = optionalUser.get();
+		// if Bcrypt math fails. reject
+		if(!BCrypt.checkpw(newLogin.getPassword(), user.getPassword())) {
+			result.rejectValue("password", "Matches", "Invalid password!");
+		}
+		//if result has errors, return 
+		if(result.hasErrors()) {
+			return null;
+		}
+		// otherwise return the user object
+		return user;
+	}
+	
+	
+}
