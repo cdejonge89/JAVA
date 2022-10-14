@@ -75,12 +75,34 @@ class DoublyLinkedList {
      * @returns {any} The data of the removed node.
      */
     removeMiddleNode() {
-        // when there is only 1 node, it is the middle, remove it.
-        if (!this.isEmpty() && this.head === this.tail) {
+           // when there is only 1 node, it is the middle, remove it.
+    if (!this.isEmpty() && this.head === this.tail) {
         const removedData = this.head.data;
         this.head = null;
         this.tail = null;
         return removedData;
+      }
+  
+      let forwardRunner = this.head;
+      let backwardsRunner = this.tail;
+  
+      while (forwardRunner && backwardsRunner) {
+        if (forwardRunner === backwardsRunner) {
+          const midNode = forwardRunner;
+          midNode.prev.next = midNode.next;
+          midNode.next.prev = midNode.prev;
+          return midNode.data;
+        }
+  
+        // runners passed each other without stopping on the same node, even length, we can exit early
+        if (forwardRunner.prev === backwardsRunner) {
+          return null;
+        }
+  
+        forwardRunner = forwardRunner.next;
+        backwardsRunner = backwardsRunner.prev;
+      }
+      return null;
     }
   
     /**
